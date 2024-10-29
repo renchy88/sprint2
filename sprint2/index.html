@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Динамический Парсер Форм</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1 class="my-4">Создание формы</h1>
+    <input type="file" id="file-input" class="form-control mb-3" onchange="donwLoad(this)" accept="*/*">
+    <div id="form-container"></div>
+    <button id="reset-btn" class="btn btn-warning mt-3">Сброс</button>
+</div>
+
+<script src="parser.js"></script>
+</body>
+</html>
