@@ -65,33 +65,30 @@ document.addEventListener('DOMContentLoaded', () => {
                         const checkboxLabel = document.createElement('label');
                         checkboxLabel.innerText = fieldObj.label || '';
                         checkboxLabel.prepend(inputElement);
-                        formGroup.appendChild(checkboxLabel); 
+                        formGroup.appendChild(checkboxLabel);
                         formContainer.appendChild(formGroup);
                         return;
 
                     case 'color':
                         inputElement = document.createElement('input');
                         inputElement.type = 'color';
+                        if (field.colors) {
+                            // Установка значений цвета из JSON (если нужно, можно добавить дополнительный функционал)
+                        }
                         break;
 
                     case 'technology':
                         inputElement = document.createElement('select');
                         inputElement.classList.add('form-control');
                         if (field.multiple) {
-                            field.technologies.forEach(tech => {
-                                const option = document.createElement('option');
-                                option.value = tech;
-                                option.textContent = tech;
-                                inputElement.appendChild(option);
-                            });
-                        } else {
-                            field.technologies.forEach(tech => {
-                                const option = document.createElement('option');
-                                option.value = tech;
-                                option.textContent = tech;
-                                inputElement.appendChild(option);
-                            });
+                            inputElement.multiple = true; // Установка атрибута multiple
                         }
+                        field.technologies.forEach(tech => {
+                            const option = document.createElement('option');
+                            option.value = tech;
+                            option.textContent = tech;
+                            inputElement.appendChild(option);
+                        });
                         break;
 
                     default:
@@ -106,10 +103,22 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        // Обработка ссылок
         if (data.references) {
             data.references.forEach(refObj => {
                 const refContainer = document.createElement('div');
                 refContainer.classList.add('reference', 'd-flex', 'justify-content-between', 'mt-2');
+
+                if (refObj.input) {
+                    const refCheckbox = document.createElement('input');
+                    refCheckbox.type = 'checkbox';
+                    refCheckbox.required = refObj.input.required === true;
+
+                    const refLabel = document.createElement('label');
+                    refLabel.innerText = refObj.label || '';
+                    refLabel.prepend(refCheckbox);
+                    refContainer.appendChild(refLabel);
+                }
 
                 if (refObj.text) {
                     const refLink = document.createElement('a');
@@ -161,13 +170,3 @@ document.addEventListener('DOMContentLoaded', () => {
         fileInput.value = '';
     });
 });
-
-function donwLoad(input) {
-    let file = input.files[0];
-    let reader = new FileReader();
-    reader.readAsText(file);
-
-    reader.onload = function() {
-        createForm(JSON.parse(reader.result))
-    }
-}
