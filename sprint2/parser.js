@@ -73,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         inputElement = document.createElement('input');
                         inputElement.type = 'color';
                         if (field.colors) {
-                            // Установка значений цвета из JSON (если нужно, можно добавить дополнительный функционал)
                         }
                         break;
 
@@ -81,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         inputElement = document.createElement('select');
                         inputElement.classList.add('form-control');
                         if (field.multiple) {
-                            inputElement.multiple = true; // Установка атрибута multiple
+                            inputElement.multiple = true; 
                         }
                         field.technologies.forEach(tech => {
                             const option = document.createElement('option');
@@ -103,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Обработка ссылок
         if (data.references) {
             data.references.forEach(refObj => {
                 const refContainer = document.createElement('div');
