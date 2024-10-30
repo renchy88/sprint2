@@ -37,51 +37,45 @@ document.addEventListener('DOMContentLoaded', () => {
                         inputElement = document.createElement(field.type === 'textarea' ? 'textarea' : 'input');
                         inputElement.type = field.type === 'textarea' ? null : field.type;
                         inputElement.classList.add('form-control');
-                        if (field.placeholder) {
-                            inputElement.placeholder = field.placeholder;
-                        }
-                        if (field.required) {
-                            inputElement.required = true;
-                        }
+                        if (field.placeholder) inputElement.placeholder = field.placeholder;
+                        if (field.required) inputElement.required = true;
                         break;
 
                     case 'file':
                         inputElement = document.createElement('input');
                         inputElement.type = 'file';
-                        if (field.multiple) {
-                            inputElement.multiple = true;
-                        }
-                        if (field.filetype) {
-                            inputElement.accept = field.filetype.map(type => `.${type}`).join(', ');
-                        }
+                        if (field.multiple) inputElement.multiple = true;
+                        if (field.filetype) inputElement.accept = field.filetype.map(type => `.${type}`).join(', ');
                         break;
 
                     case 'checkbox':
                         inputElement = document.createElement('input');
                         inputElement.type = 'checkbox';
-                        if (field.checked === 'true') {
-                            inputElement.checked = true;
-                        }
+                        inputElement.checked = field.checked === 'true';
                         const checkboxLabel = document.createElement('label');
-                        checkboxLabel.innerText = fieldObj.label || '';
                         checkboxLabel.prepend(inputElement);
                         formGroup.appendChild(checkboxLabel);
                         formContainer.appendChild(formGroup);
                         return;
 
                     case 'color':
-                        inputElement = document.createElement('input');
-                        inputElement.type = 'color';
+                        inputElement = document.createElement('select');
+                        inputElement.classList.add('form-control');
                         if (field.colors) {
+                            field.colors.forEach(color => {
+                                const option = document.createElement('option');
+                                option.value = color;
+                                option.style.backgroundColor = color;
+                                option.textContent = color;
+                                inputElement.appendChild(option);
+                            });
                         }
                         break;
 
                     case 'technology':
                         inputElement = document.createElement('select');
                         inputElement.classList.add('form-control');
-                        if (field.multiple) {
-                            inputElement.multiple = true; 
-                        }
+                        if (field.multiple) inputElement.multiple = true;
                         field.technologies.forEach(tech => {
                             const option = document.createElement('option');
                             option.value = tech;
@@ -111,25 +105,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     const refCheckbox = document.createElement('input');
                     refCheckbox.type = 'checkbox';
                     refCheckbox.required = refObj.input.required === true;
-
-                    const refLabel = document.createElement('label');
-                    refLabel.innerText = refObj.label || '';
-                    refLabel.prepend(refCheckbox);
-                    refContainer.appendChild(refLabel);
+                    refContainer.appendChild(refCheckbox);
                 }
 
-                if (refObj.text) {
-                    const refLink = document.createElement('a');
-                    refLink.href = `#${refObj.ref || ''}`;
-                    refLink.innerText = refObj.text;
-                    refLink.classList.add('text-primary');
-                    refContainer.appendChild(refLink);
-                }
-
-                if (refObj["text without ref"]) {
-                    const refText = document.createElement('span');
-                    refText.innerText = refObj["text without ref"];
-                    refContainer.appendChild(refText);
+                if (refObj["text without ref"] || refObj.text) {
+                    const refSpan = document.createElement('span');
+                    refSpan.innerText = `${refObj["text without ref"] || ''} ${refObj.text || ''}`;
+                    refContainer.appendChild(refSpan);
                 }
 
                 formContainer.appendChild(refContainer);
